@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <!-- Top Header Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvStaffHeaderName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lễ Tân: Lê Thị Hương"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quầy Tiếp Nhận &amp; Điều Phối Lịch Khám"
+                    android:textColor="#E0F2FE"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivStaffLogout"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_badge_status"
+                android:backgroundTint="#0369A1"
+                android:padding="6dp"
+                android:src="@android:drawable/ic_lock_power_off"
+                app:tint="@color/white" />
+        </RelativeLayout>
+
+        <!-- Quick Action: Đặt lịch hộ cho bệnh nhân -->
+        <Button
+            android:id="@+id/btnStaffCreateBooking"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="14dp"
+            android:backgroundTint="@color/white"
+            android:text="➕ Đặt Lịch Hộ Cho Bệnh Nhân (Tại Quầy / Hotline)"
+            android:textColor="@color/primary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            app:cornerRadius="8dp" />
+    </LinearLayout>
+
+    <!-- Search Bar for Patient & Date Filter -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <EditText
+            android:id="@+id/etStaffSearch"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_edit_text"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:drawablePadding="8dp"
+            android:hint="Tìm theo SĐT, Tên bệnh nhân hoặc Mã khám..."
+            android:inputType="text"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/tvStaffQueueTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Danh Sách Tiếp Nhận &amp; Hàng Đợi Trong Ngày (0)"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <!-- Empty State -->
+    <TextView
+        android:id="@+id/tvStaffEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="Chưa có bệnh nhân nào trong danh sách tiếp nhận."
+        android:textColor="@color/text_muted"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvStaffAppointments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:layout_weight="1"
+        android:paddingVertical="4dp" />
+</LinearLayout>

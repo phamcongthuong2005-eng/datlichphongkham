@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_revert"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Lịch Làm Việc &amp; Đăng Ký Nghỉ"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Working Days Config -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Các ngày trực khám cố định trong tuần:"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etWorkingDays"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Thứ 2 - Thứ 7 (Sáng + Chiều)"
+                android:textSize="13sp" />
+
+            <!-- Doctor Bio / Note -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Ghi chú lịch làm việc / Giới thiệu:"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etDoctorBio"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_edit_text"
+                android:gravity="top"
+                android:hint="Ghi chú về ca trực, phòng khám chỉ định..."
+                android:inputType="textMultiLine"
+                android:textSize="13sp" />
+
+            <!-- Request Leave -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="🏖️ Đăng ký thời gian nghỉ phép / Nghỉ đột xuất:"
+                android:textColor="@color/status_cancelled"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etLeaveDate"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_edit_text"
+                android:focusable="false"
+                android:hint="Bấm để chọn ngày nghỉ phép..."
+                android:textSize="13sp" />
+
+            <EditText
+                android:id="@+id/etLeaveReason"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_edit_text"
+                android:gravity="top"
+                android:hint="Lý do xin nghỉ (Công tác, bận việc cá nhân...)"
+                android:inputType="textMultiLine"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btnSubmitLeave"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#FEE2E2"
+                android:text="BÁO NGHỈ PHÉP NGÀY NÀY"
+                android:textColor="@color/status_cancelled"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:cornerRadius="8dp" />
+
+            <!-- Save Schedule -->
+            <Button
+                android:id="@+id/btnSaveSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@color/primary"
+                android:text="CẬP NHẬT LỊCH LÀM VIỆC"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

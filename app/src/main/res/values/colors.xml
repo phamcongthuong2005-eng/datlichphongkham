@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Medical & Healthcare Palette -->
+    <color name="primary">#0284C7</color>
+    <color name="primary_dark">#0369A1</color>
+    <color name="primary_light">#E0F2FE</color>
+    <color name="accent">#0D9488</color>
+    <color name="background">#F8FAFC</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_muted">#94A3B8</color>
+    <color name="border_color">#E2E8F0</color>
+    
+    <!-- Status Colors -->
+    <color name="status_pending">#F59E0B</color>
+    <color name="status_confirmed">#0284C7</color>
+    <color name="status_examining">#8B5CF6</color>
+    <color name="status_completed">#10B981</color>
+    <color name="status_cancelled">#EF4444</color>
+    <color name="status_noshow">#6B7280</color>
+</resources>

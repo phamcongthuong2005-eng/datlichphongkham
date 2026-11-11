@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/bg_slot_available"
+        android:backgroundTint="@color/white"
+        android:gravity="center"
+        android:text="🏥"
+        android:textSize="48sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="PHÒNG KHÁM ĐA KHOA"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:text="Hệ Thống Đặt Lịch &amp; Quản Lý Toàn Diện"
+        android:textColor="#E0F2FE"
+        android:textSize="14sp" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:indeterminateTint="@color/white" />
+</LinearLayout>

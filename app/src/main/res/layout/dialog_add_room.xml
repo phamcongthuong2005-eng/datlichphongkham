@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mã phòng *"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etRoomCode"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_edit_text"
+        android:hint="Ví dụ: P105, P201"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Tên phòng khám *"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etRoomName"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_edit_text"
+        android:hint="Ví dụ: Phòng Khám Nhi Đồng"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Loại phòng / Chuyên khoa"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etRoomType"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_edit_text"
+        android:hint="Ví dụ: Khám Nhi, Khám Tim Mạch"
+        android:textSize="14sp" />
+</LinearLayout>

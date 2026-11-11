@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_revert"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Khám Bệnh &amp; Kê Đơn (Menu 4)"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Patient Info Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:id="@+id/tvExaminePatientName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bệnh nhân: Nguyễn Hữu Hậu (SĐT: 0912345678)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvExamineReason"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Lý do khám: Đau tức vùng thượng vị, ợ chua"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvExamineMedicalHistory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Tiền sử &amp; Dị ứng: Dị ứng Penicillin, Viêm dạ dày nhẹ"
+                        android:textColor="@color/status_cancelled"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Vital Signs Card (Menu 4.3: Chỉ số sinh hiệu đo bởi Y tá) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardVitalSigns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#F0F8FF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📊 CHỈ SỐ SINH HIỆU (Y TÁ ĐO ĐẠT)"
+                        android:textColor="@color/primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvExamineVitals"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="3dp"
+                        android:text="• Chiều cao: 172 cm | Cân nặng: 68 kg | BMI: 23.0\n• Huyết áp: 120/80 mmHg | Nhịp tim: 75 bpm\n• Thân nhiệt: 36.8°C | SpO2: 98%"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tvVitalsAlert"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="⚠️ CẢNH BÁO BẤT THƯỜNG: Huyết áp cao độ 1"
+                        android:textColor="@color/status_cancelled"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 1. Symptoms -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="1. Triệu chứng lâm sàng ghi nhận *"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etExamineSymptoms"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_edit_text"
+                android:gravity="top"
+                android:hint="Ghi nhận triệu chứng khi thăm khám..."
+                android:inputType="textMultiLine"
+                android:textSize="13sp" />
+
+            <!-- 2. Differential & Primary Diagnosis -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="2. Chẩn đoán sơ bộ / Phân biệt"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etDifferentialDiagnosis"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Ví dụ: Theo dõi Trào ngược dạ dày thực quản (GERD)"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="3. Chẩn đoán xác định (Mã ICD/Bệnh chính) *"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etExamineDiagnosis"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Ví dụ: K29.0 - Viêm dạ dày cấp tính"
+                android:textSize="13sp" />
+
+            <!-- 3. Tests / Paraclinical -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="4. Chỉ định xét nghiệm / Cận lâm sàng"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etExamineTests"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Nội soi dạ dày, xét nghiệm vi khuẩn HP, X-quang..."
+                android:textSize="13sp" />
+
+            <!-- Prescription Section -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5. Kê đơn thuốc điều trị"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAddMedicine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="+ Thêm thuốc"
+                    android:textColor="@color/primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvExaminePrescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Doctor Notes & Follow up -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="6. Lời dặn &amp; Chế độ ăn uống / sinh hoạt"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etExamineNotes"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_edit_text"
+                android:gravity="top"
+                android:hint="Uống thuốc đúng giờ, tránh ăn thức ăn chua cay, nhiều dầu mỡ..."
+                android:inputType="textMultiLine"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="7. Ngày hẹn tái khám"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etExamineFollowUpDate"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Ví dụ: Tái khám sau 14 ngày hoặc khi có dấu hiệu bất thường"
+                android:textSize="13sp" />
+
+            <!-- Submit Finish Exam -->
+            <Button
+                android:id="@+id/btnCompleteExamine"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@color/status_completed"
+                android:text="HOÀN TẤT KHÁM &amp; IN HỒ SƠ"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

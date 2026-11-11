@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:rotationY="360">
+
+        <!-- App Logo & Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/bg_slot_available"
+                android:gravity="center"
+                android:text="🏥"
+                android:textSize="32sp" />
+
+            <TextView
+                android:id="@+id/tvAuthTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Phòng Khám Lê Lợi"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvAuthSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Chuyên Khoa Cơ Xương Khớp &amp; Cột Sống"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Quick Demo Switcher Buttons (4 vai trò phòng khám tư nhân) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Chọn nhanh tài khoản Demo (4 vai trò):"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnQuickPatient"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="3dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/primary_light"
+                android:text="Bệnh nhân"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="11sp"
+                app:cornerRadius="6dp" />
+
+            <Button
+                android:id="@+id/btnQuickDoctor"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginHorizontal="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/primary_light"
+                android:text="Bác sĩ"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="11sp"
+                app:cornerRadius="6dp" />
+
+            <Button
+                android:id="@+id/btnQuickStaff"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginHorizontal="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/primary_light"
+                android:text="Lễ tân"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="11sp"
+                app:cornerRadius="6dp" />
+
+            <Button
+                android:id="@+id/btnQuickAdmin"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/primary_light"
+                android:text="Quản trị"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="11sp"
+                app:cornerRadius="6dp" />
+
+            <Button
+                android:id="@+id/btnQuickNurse"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Form Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- Full Name (Only for Register) -->
+                <LinearLayout
+                    android:id="@+id/layoutFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Họ và tên *"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etFullName"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="Nhập họ và tên đầy đủ"
+                        android:inputType="textPersonName"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Email or Phone -->
+                <TextView
+                    android:id="@+id/tvAccountLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Email hoặc Số điện thoại *"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:hint="Nhập số điện thoại hoặc gmail"
+                    android:inputType="textEmailAddress"
+                    android:textSize="14sp" />
+
+                <!-- Password -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Mật khẩu *"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:hint="Nhập mật khẩu"
+                    android:inputType="textPassword"
+                    android:textSize="14sp" />
+
+                <!-- Forgot Password -->
+                <TextView
+                    android:id="@+id/tvForgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:text="Quên mật khẩu?"
+                    android:textColor="@color/primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <!-- Main Submit Button -->
+                <Button
+                    android:id="@+id/btnSubmitAuth"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/primary"
+                    android:text="ĐĂNG NHẬP"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="10dp" />
+
+                <!-- Switch Login/Register -->
+                <TextView
+                    android:id="@+id/tvSwitchAuthMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="14dp"
+                    android:text="Chưa có tài khoản? Đăng ký ngay"
+                    android:textColor="@color/primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Network permissions for Course 'Lập Trình Mạng' -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ClinicApp">
+
+        <!-- 1. Splash Screen -->
+        <activity
+            android:name=".activities.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 2. Authentication & Account (Menu 1) -->
+        <activity android:name=".activities.AuthActivity" android:exported="false" />
+        <activity android:name=".activities.ChangePasswordActivity" android:exported="false" />
+        <activity android:name=".activities.NotificationActivity" android:exported="false" />
+
+        <!-- 3. Patient Module (Menu 2) -->
+        <activity android:name=".activities.patient.PatientMainActivity" android:exported="false" />
+        <activity android:name=".activities.patient.BookAppointmentActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activities.patient.DoctorDetailActivity" android:exported="false" />
+        <activity android:name=".activities.patient.PatientAppointmentsActivity" android:exported="false" />
+        <activity android:name=".activities.patient.MedicalRecordDetailActivity" android:exported="false" />
+        <activity android:name=".activities.patient.ReviewDoctorActivity" android:exported="false" />
+        <activity android:name=".activities.patient.PatientProfileActivity" android:exported="false" />
+
+        <!-- 4. Doctor Module (Menu 4) -->
+        <activity android:name=".activities.doctor.DoctorMainActivity" android:exported="false" />
+        <activity android:name=".activities.doctor.DoctorExamineActivity" android:exported="false" />
+        <activity android:name=".activities.doctor.DoctorScheduleActivity" android:exported="false" />
+
+        <!-- 5. Staff & Nurse Module (Menu 3) -->
+        <activity android:name=".activities.staff.StaffMainActivity" android:exported="false" />
+        <activity android:name=".activities.staff.StaffCreateBookingActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activities.staff.StaffInvoiceActivity" android:exported="false" />
+        <activity android:name=".activities.staff.NurseMainActivity" android:exported="false" />
+        <activity android:name=".activities.staff.NurseMeasureVitalsActivity" android:exported="false" />
+
+        <!-- 6. Admin Module (Menu 5) -->
+        <activity android:name=".activities.admin.AdminMainActivity" android:exported="false" />
+        <activity android:name=".activities.admin.AdminManageUsersActivity" android:exported="false" />
+        <activity android:name=".activities.admin.AdminManageDoctorsActivity" android:exported="false" />
+        <activity android:name=".activities.admin.AdminManageRoomsActivity" android:exported="false" />
+        <activity android:name=".activities.admin.AdminManageShiftsActivity" android:exported="false" />
+        <activity android:name=".activities.admin.AdminConfigSlotsActivity" android:exported="false" />
+        <activity android:name=".activities.admin.AdminReportsActivity" android:exported="false" />
+        <activity android:name=".activities.admin.AdminAuditLogsActivity" android:exported="false" />
+
+    </application>
+
+</manifest>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDoctorHeaderName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bác sĩ: BS. CKI Nguyễn Văn Bình"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDoctorHeaderSpecialty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chuyên khoa Nội Tổng Quát"
+                    android:textColor="#E0F2FE"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivDoctorLogout"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_badge_status"
+                android:backgroundTint="#0369A1"
+                android:padding="6dp"
+                android:src="@android:drawable/ic_lock_power_off"
+                app:tint="@color/white" />
+        </RelativeLayout>
+
+        <!-- Doctor Quick Action Buttons (Xem lịch làm việc / Đăng ký nghỉ) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnDoctorSchedule"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:text="📅 Lịch trực &amp; Đăng ký nghỉ"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                android:textAllCaps="false"
+                app:cornerRadius="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Date selector & Filter for Appointments -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày khám:"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etDoctorDateFilter"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_edit_text"
+            android:focusable="false"
+            android:hint="2026-09-09"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- Title & Count -->
+    <TextView
+        android:id="@+id/tvAppointmentCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:text="Danh sách bệnh nhân hẹn khám (0)"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <!-- Empty State -->
+    <TextView
+        android:id="@+id/tvDoctorEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="Không có bệnh nhân nào đặt lịch trong ngày này."
+        android:textColor="@color/text_muted"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <!-- Appointments RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDoctorAppointments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:paddingVertical="4dp" />
+</LinearLayout>
