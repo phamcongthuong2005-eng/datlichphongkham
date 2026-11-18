@@ -3,126 +3,231 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="#F8F9FA"
     android:orientation="vertical">
 
-    <!-- Top Header Bar -->
+    <!-- Top Blue Header Bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:orientation="vertical"
+        android:background="#0288D1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingHorizontal="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="16dp">
+        android:paddingTop="28dp"
+        android:paddingBottom="20dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="Bàn Tiếp Đón &amp; Lễ Tân"
+                android:textColor="#E1F5FE"
+                android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/tvStaffHeaderName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lễ Tân: Lê Thị Hương"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvStaffHeaderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Xin chào, Lễ Tân Lê Thị Hương"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quầy Tiếp Nhận &amp; Điều Phối Lịch Khám"
-                    android:textColor="#E0F2FE"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/ivStaffLogout"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bg_badge_status"
-                android:backgroundTint="#0369A1"
-                android:padding="6dp"
-                android:src="@android:drawable/ic_lock_power_off"
-                app:tint="@color/white" />
-        </RelativeLayout>
-
-        <!-- Quick Action: Đặt lịch hộ cho bệnh nhân -->
-        <Button
-            android:id="@+id/btnStaffCreateBooking"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginTop="14dp"
-            android:backgroundTint="@color/white"
-            android:text="➕ Đặt Lịch Hộ Cho Bệnh Nhân (Tại Quầy / Hotline)"
-            android:textColor="@color/primary"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            app:cornerRadius="8dp" />
-    </LinearLayout>
-
-    <!-- Search Bar for Patient & Date Filter -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
-
-        <EditText
-            android:id="@+id/etStaffSearch"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/ivStaffLogout"
+            android:layout_width="44dp"
             android:layout_height="44dp"
-            android:background="@drawable/bg_edit_text"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:drawablePadding="8dp"
-            android:hint="Tìm theo SĐT, Tên bệnh nhân hoặc Mã khám..."
-            android:inputType="text"
-            android:textSize="13sp" />
+            android:background="@drawable/bg_power_button"
+            android:padding="10dp"
+            android:src="@android:drawable/ic_lock_power_off"
+            app:tint="@color/white" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="4dp">
-
-        <TextView
-            android:id="@+id/tvStaffQueueTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Danh Sách Tiếp Nhận &amp; Hàng Đợi Trong Ngày (0)"
-            android:textColor="@color/text_primary"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <!-- Empty State -->
-    <TextView
-        android:id="@+id/tvStaffEmptyState"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:text="Chưa có bệnh nhân nào trong danh sách tiếp nhận."
-        android:textColor="@color/text_muted"
-        android:textSize="14sp"
-        android:visibility="gone" />
-
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvStaffAppointments"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="6dp"
         android:layout_weight="1"
-        android:paddingVertical="4dp" />
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Section Title: Nghiệp Vụ Lễ Tân -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="14dp"
+                android:text="Nghiệp Vụ Lễ Tân"
+                android:textColor="#111827"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <!-- Card 1: Quản Lý Lịch Hẹn Phòng Khám -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardStaffManageAppointments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="18dp">
+
+                    <ImageView
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/ic_card_calendar" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Quản Lý Lịch Hẹn Phòng Khám"
+                            android:textColor="#111827"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="Duyệt / Từ chối lịch; Check-in điểm danh bệnh nhân"
+                            android:textColor="#6B7280"
+                            android:textSize="12.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card 2: Hàng Chờ Khám Hôm Nay -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardStaffQueueToday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="18dp">
+
+                    <ImageView
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/ic_card_plus" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hàng Chờ Khám Hôm Nay"
+                            android:textColor="#111827"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="Xem danh sách bệnh nhân đã check-in theo từng bác sĩ"
+                            android:textColor="#6B7280"
+                            android:textSize="12.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card 3: Đặt Lịch Hộ Bệnh Nhân Vãng Lai -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardStaffWalkInBooking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="18dp">
+
+                    <ImageView
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:src="@drawable/ic_card_person" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Đặt Lịch Hộ Bệnh Nhân Vãng Lai"
+                            android:textColor="#111827"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="Tìm hoặc tạo nhanh hồ sơ và đặt lịch xác nhận ngay"
+                            android:textColor="#6B7280"
+                            android:textSize="12.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

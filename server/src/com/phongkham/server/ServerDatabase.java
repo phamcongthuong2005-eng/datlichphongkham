@@ -21,8 +21,9 @@ public class ServerDatabase {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String now = sdf.format(new Date());
 
-        // Users Phòng Khám Tư Nhân Lê Lợi - Cơ Xương Khớp (4 vai trò: ADMIN, DOCTOR, STAFF, PATIENT)
-        users.add(createUser(1, "Chủ Phòng Khám Lê Lợi", "admin@gmail.com", "0900000001", "123456", "ADMIN"));
+        // Users Phòng Khám Tư Nhân Lê Lợi - Cơ Xương Khớp (Vai trò: OWNER, ADMIN, DOCTOR, STAFF, PATIENT)
+        users.add(createUser(1, "Chủ Phòng Khám Lê Lợi", "chuphongkham@gmail.com", "0900000001", "123456", "OWNER"));
+        users.add(createUser(10, "Quản Trị Viên (Admin)", "admin@gmail.com", "0900000010", "123456", "ADMIN"));
         users.add(createUser(2, "BS. CKI Phan Ba Hai Bình", "bacsi@gmail.com", "0900000002", "123456", "DOCTOR"));
         users.add(createUser(3, "ThS. BS Trần Thị Mai", "bsmai@gmail.com", "0900000003", "123456", "DOCTOR"));
         users.add(createUser(4, "PGS. TS Lê Hoàng Quân", "bsquan@gmail.com", "0900000004", "123456", "DOCTOR"));

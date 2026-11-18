@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvStaffRoleBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_badge_status"
+                    android:backgroundTint="#E0F2FE"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="3dp"
+                    android:text="BÁC SĨ"
+                    android:textColor="#0369A1"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvStaffShiftType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Ca Sáng (08:00 - 12:00)"
+                    android:textColor="#475569"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvStaffScheduleStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/bg_badge_status"
+                android:backgroundTint="#DCFCE7"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:text="Đang trực"
+                android:textColor="#16A34A"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="10dp"
+            android:background="#E2E8F0" />
+
+        <TextView
+            android:id="@+id/tvStaffMemberName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BS. CKI Phan Ba Hai Bình"
+            android:textColor="#0F172A"
+            android:textSize="15.5sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvStaffRoomAssigned"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="📍 Phòng: P101 - Khám Cột Sống"
+                android:textColor="#64748B"
+                android:textSize="12.5sp" />
+
+            <TextView
+                android:id="@+id/tvStaffPhoneContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📞 0900000002"
+                android:textColor="#64748B"
+                android:textSize="12.5sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvStaffNoteOrReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Khám điều trị cơ xương khớp &amp; cột sống buổi sáng"
+            android:textColor="#0284C7"
+            android:textSize="12sp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

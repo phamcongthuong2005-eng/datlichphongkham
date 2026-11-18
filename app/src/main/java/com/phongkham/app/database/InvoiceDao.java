@@ -82,6 +82,43 @@ public class InvoiceDao {
         return inv;
     }
 
+    public List<Invoice> getAllInvoices() {
+        List<Invoice> list = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_INVOICES + " ORDER BY id DESC", null);
+        while (cursor.moveToNext()) {
+            Invoice inv = new Invoice();
+            inv.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));
+            inv.setAppointmentId(cursor.getInt(cursor.getColumnIndexOrThrow("appointment_id")));
+            inv.setAppointmentCode(cursor.getString(cursor.getColumnIndexOrThrow("appointment_code")));
+            inv.setPatientId(cursor.getInt(cursor.getColumnIndexOrThrow("patient_id")));
+            inv.setPatientName(cursor.getString(cursor.getColumnIndexOrThrow("patient_name")));
+            inv.setConsultationFee(cursor.getDouble(cursor.getColumnIndexOrThrow("consultation_fee")));
+            inv.setMedicineFee(cursor.getDouble(cursor.getColumnIndexOrThrow("medicine_fee")));
+            inv.setTestFee(cursor.getDouble(cursor.getColumnIndexOrThrow("test_fee")));
+            inv.setTotalAmount(cursor.getDouble(cursor.getColumnIndexOrThrow("total_amount")));
+            inv.setStatus(cursor.getString(cursor.getColumnIndexOrThrow("status")));
+            inv.setPaymentMethod(cursor.getString(cursor.getColumnIndexOrThrow("payment_method")));
+            inv.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow("created_at")));
+            list.add(inv);
+        }
+        cursor.close();
+        return list;
+    }
+
+    public boolean createInvoice(Invoice invoice) {
+        return createOrUpdateInvoice(invoice);
+    }
+
+    public boolean updateInvoiceStatus(int invoiceId, String status, String paymentMethod) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("status", status);
+        if (paymentMethod != null) values.put("payment_method", paymentMethod);
+        int rows = db.update(DatabaseHelper.TABLE_INVOICES, values, "id = ?", new String[]{String.valueOf(invoiceId)});
+        return rows > 0;
+    }
+
     public double getTotalRevenue() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT SUM(total_amount) FROM " + DatabaseHelper.TABLE_INVOICES + " WHERE status = 'PAID'", null);

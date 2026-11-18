@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0F172A"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="Quản Lý Tiền &amp; Công Nợ Bệnh Nhân"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Search Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <EditText
+            android:id="@+id/etPatientFinanceSearch"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_edit_text"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:drawablePadding="8dp"
+            android:hint="Tìm theo tên bệnh nhân, SĐT hoặc mã..."
+            android:inputType="text"
+            android:textSize="13sp" />
+
+        <!-- Filter Buttons: Tất cả / Đã thanh toán / Chưa thanh toán -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnFilterAll"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="3dp"
+                android:backgroundTint="#0284C7"
+                android:text="Tất cả"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                app:cornerRadius="6dp" />
+
+            <Button
+                android:id="@+id/btnFilterPaid"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="2dp"
+                android:backgroundTint="#F1F5F9"
+                android:text="Đã thu tiền"
+                android:textAllCaps="false"
+                android:textColor="#334155"
+                android:textSize="11sp"
+                app:cornerRadius="6dp" />
+
+            <Button
+                android:id="@+id/btnFilterUnpaid"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_weight="1"
+                android:layout_marginStart="3dp"
+                android:backgroundTint="#F1F5F9"
+                android:text="Còn nợ tiền"
+                android:textAllCaps="false"
+                android:textColor="#334155"
+                android:textSize="11sp"
+                app:cornerRadius="6dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Top Total Collected & Debt Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="#F8FAFC">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đã thu từ BN:"
+                    android:textColor="#64748B"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvTotalCollected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="14.650.000 đ"
+                    android:textColor="#059669"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Công nợ chưa thu:"
+                    android:textColor="#64748B"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvTotalUnpaidDebt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="1.200.000 đ"
+                    android:textColor="#F59E0B"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPatientFinance"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false" />
+
+</LinearLayout>

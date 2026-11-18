@@ -1,10 +1,9 @@
 package com.phongkham.app.activities.doctor;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,43 +11,34 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.cardview.widget.CardView;
 
 import com.phongkham.app.R;
 import com.phongkham.app.activities.AuthActivity;
-import com.phongkham.app.adapters.AppointmentAdapter;
-import com.phongkham.app.database.AppointmentDao;
 import com.phongkham.app.database.AuditLogDao;
 import com.phongkham.app.database.DoctorDao;
-import com.phongkham.app.models.Appointment;
+import com.phongkham.app.database.UserDao;
 import com.phongkham.app.models.Doctor;
 import com.phongkham.app.models.User;
 import com.phongkham.app.utils.DateTimeUtils;
 import com.phongkham.app.utils.SessionManager;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class DoctorMainActivity extends AppCompatActivity {
     private SessionManager sessionManager;
     private DoctorDao doctorDao;
-    private AppointmentDao appointmentDao;
+    private UserDao userDao;
     private AuditLogDao auditLogDao;
 
-    private TextView tvDoctorHeaderName, tvDoctorHeaderSpecialty, tvAppointmentCount, tvDoctorEmptyState;
+    private TextView tvDoctorHeaderName;
     private ImageView ivDoctorLogout;
-    private Button btnDoctorSchedule;
-    private EditText etDoctorDateFilter;
-    private RecyclerView rvDoctorAppointments;
+    private TextView tvEditDoctorProfile;
+    private TextView tvDoctorFullNameTitle, tvDoctorSpecialty, tvDoctorRoom, tvDoctorFee, tvDoctorExperience, tvDoctorPhone;
+    private CardView cardDoctorAppointments, cardDoctorFlexibleSlots, cardDoctorWeeklySchedule;
 
     private Doctor currentDoctor;
-    private String selectedDate = "";
-    private List<Appointment> appointmentList = new ArrayList<>();
-    private AppointmentAdapter adapter;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,120 +47,79 @@ public class DoctorMainActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         doctorDao = new DoctorDao(this);
-        appointmentDao = new AppointmentDao(this);
+        userDao = new UserDao(this);
         auditLogDao = new AuditLogDao(this);
-
-        selectedDate = DateTimeUtils.getToday();
 
         initViews();
         loadDoctorProfile();
-        setupDatePicker();
         setupListeners();
     }
 
     private void initViews() {
         tvDoctorHeaderName = findViewById(R.id.tvDoctorHeaderName);
-        tvDoctorHeaderSpecialty = findViewById(R.id.tvDoctorHeaderSpecialty);
-        tvAppointmentCount = findViewById(R.id.tvAppointmentCount);
-        tvDoctorEmptyState = findViewById(R.id.tvDoctorEmptyState);
         ivDoctorLogout = findViewById(R.id.ivDoctorLogout);
-        btnDoctorSchedule = findViewById(R.id.btnDoctorSchedule);
-        etDoctorDateFilter = findViewById(R.id.etDoctorDateFilter);
-        rvDoctorAppointments = findViewById(R.id.rvDoctorAppointments);
+        tvEditDoctorProfile = findViewById(R.id.tvEditDoctorProfile);
 
-        etDoctorDateFilter.setText(selectedDate);
-        rvDoctorAppointments.setLayoutManager(new LinearLayoutManager(this));
+        tvDoctorFullNameTitle = findViewById(R.id.tvDoctorFullNameTitle);
+        tvDoctorSpecialty = findViewById(R.id.tvDoctorSpecialty);
+        tvDoctorRoom = findViewById(R.id.tvDoctorRoom);
+        tvDoctorFee = findViewById(R.id.tvDoctorFee);
+        tvDoctorExperience = findViewById(R.id.tvDoctorExperience);
+        tvDoctorPhone = findViewById(R.id.tvDoctorPhone);
+
+        cardDoctorAppointments = findViewById(R.id.cardDoctorAppointments);
+        cardDoctorFlexibleSlots = findViewById(R.id.cardDoctorFlexibleSlots);
+        cardDoctorWeeklySchedule = findViewById(R.id.cardDoctorWeeklySchedule);
     }
 
     private void loadDoctorProfile() {
         int userId = sessionManager.getUserId();
+        currentUser = userDao.getUserById(userId);
         currentDoctor = doctorDao.getDoctorByUserId(userId);
         if (currentDoctor == null) {
-            // Fallback first doctor
             List<Doctor> all = doctorDao.getAllDoctors();
             if (!all.isEmpty()) currentDoctor = all.get(0);
         }
 
         if (currentDoctor != null) {
-            tvDoctorHeaderName.setText(currentDoctor.getFullName());
-            tvDoctorHeaderSpecialty.setText("Chuyên khoa " + currentDoctor.getSpecialtyName() + " (" + currentDoctor.getDegree() + ")");
-        }
-        loadAppointments();
-    }
+            String degree = currentDoctor.getDegree() != null ? currentDoctor.getDegree() + " " : "";
+            tvDoctorHeaderName.setText("Xin chào, " + degree + currentDoctor.getFullName());
+            tvDoctorFullNameTitle.setText(degree + currentDoctor.getFullName());
+            tvDoctorSpecialty.setText("• Chuyên khoa: " + currentDoctor.getSpecialtyName());
+            tvDoctorRoom.setText("• Phòng khám: Phòng 101");
+            tvDoctorFee.setText("• Giá khám: " + DateTimeUtils.formatCurrency(currentDoctor.getConsultationFee()));
+            tvDoctorExperience.setText("• Kinh nghiệm: " + currentDoctor.getExperienceYears() + " năm");
 
-    private void setupDatePicker() {
-        etDoctorDateFilter.setOnClickListener(v -> {
-            Calendar c = Calendar.getInstance();
-            DatePickerDialog dialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-                Calendar cal = Calendar.getInstance();
-                cal.set(year, month, dayOfMonth);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                selectedDate = sdf.format(cal.getTime());
-                etDoctorDateFilter.setText(selectedDate);
-                loadAppointments();
-            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-            dialog.show();
-        });
-    }
-
-    private void loadAppointments() {
-        if (currentDoctor == null) return;
-        appointmentList = appointmentDao.getAppointmentsByDoctorAndDate(currentDoctor.getId(), selectedDate);
-        tvAppointmentCount.setText("Danh sách bệnh nhân hẹn khám (" + appointmentList.size() + ")");
-
-        if (appointmentList.isEmpty()) {
-            tvDoctorEmptyState.setVisibility(View.VISIBLE);
-            rvDoctorAppointments.setVisibility(View.GONE);
-        } else {
-            tvDoctorEmptyState.setVisibility(View.GONE);
-            rvDoctorAppointments.setVisibility(View.VISIBLE);
-
-            adapter = new AppointmentAdapter(this, appointmentList, User.ROLE_DOCTOR, new AppointmentAdapter.OnAppointmentActionListener() {
-                @Override
-                public void onPrimaryAction(Appointment appointment) {
-                    // Bắt đầu khám / Tiếp tục khám / Xem hồ sơ
-                    Intent intent = new Intent(DoctorMainActivity.this, DoctorExamineActivity.class);
-                    intent.putExtra("appointment", appointment);
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onSecondaryAction(Appointment appointment) {
-                    // Báo vắng mặt
-                    new AlertDialog.Builder(DoctorMainActivity.this)
-                            .setTitle("Cập nhật vắng mặt")
-                            .setMessage("Đánh dấu bệnh nhân " + appointment.getPatientName() + " không đến khám (No-Show)?")
-                            .setPositiveButton("Xác nhận vắng", (dialog, which) -> {
-                                appointmentDao.updateStatus(appointment.getId(), Appointment.STATUS_NOSHOW);
-                                auditLogDao.log(sessionManager.getUserId(), sessionManager.getFullName(), User.ROLE_DOCTOR,
-                                        "CẬP NHẬT TRẠNG THÁI", "Đánh dấu bệnh nhân vắng mặt cho lịch " + appointment.getAppointmentCode());
-                                Toast.makeText(DoctorMainActivity.this, "Đã cập nhật trạng thái vắng mặt", Toast.LENGTH_SHORT).show();
-                                loadAppointments();
-                            })
-                            .setNegativeButton("Hủy", null)
-                            .show();
-                }
-
-                @Override
-                public void onItemClick(Appointment appointment) {
-                    Intent intent = new Intent(DoctorMainActivity.this, DoctorExamineActivity.class);
-                    intent.putExtra("appointment", appointment);
-                    startActivity(intent);
-                }
-            });
-            rvDoctorAppointments.setAdapter(adapter);
+            String phone = (currentUser != null && currentUser.getPhone() != null && !currentUser.getPhone().isEmpty())
+                    ? currentUser.getPhone() : "0900000002";
+            tvDoctorPhone.setText("• SĐT: " + phone);
         }
     }
 
     private void setupListeners() {
-        btnDoctorSchedule.setOnClickListener(v -> {
-            if (currentDoctor != null) {
-                Intent intent = new Intent(DoctorMainActivity.this, DoctorScheduleActivity.class);
-                intent.putExtra("doctor", currentDoctor);
-                startActivity(intent);
-            }
+        // Card 1: Danh sách ca khám
+        cardDoctorAppointments.setOnClickListener(v -> {
+            Intent intent = new Intent(DoctorMainActivity.this, DoctorAppointmentsActivity.class);
+            startActivity(intent);
         });
 
+        // Card 2: Đóng / Mở Giờ Khám Linh Hoạt
+        cardDoctorFlexibleSlots.setOnClickListener(v -> {
+            Intent intent = new Intent(DoctorMainActivity.this, DoctorSlotToggleActivity.class);
+            startActivity(intent);
+        });
+
+        // Card 3: Mở Ca Khám & Lịch Tuần
+        cardDoctorWeeklySchedule.setOnClickListener(v -> {
+            Intent intent = new Intent(DoctorMainActivity.this, DoctorScheduleActivity.class);
+            intent.putExtra("doctor", currentDoctor);
+            startActivity(intent);
+        });
+
+        // Chỉnh sửa hồ sơ bác sĩ
+        tvEditDoctorProfile.setOnClickListener(v -> showEditProfileDialog());
+
+        // Đăng xuất
         ivDoctorLogout.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
                     .setTitle("Đăng xuất")
@@ -185,9 +134,50 @@ public class DoctorMainActivity extends AppCompatActivity {
         });
     }
 
+    private void showEditProfileDialog() {
+        if (currentDoctor == null) return;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Chỉnh sửa thông tin Bác sĩ");
+
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_doctor, null);
+        EditText etDoctorName = dialogView.findViewById(R.id.etDocName);
+        EditText etDoctorDegree = dialogView.findViewById(R.id.etDocDegree);
+        EditText etDoctorExp = dialogView.findViewById(R.id.etDocExp);
+        EditText etDoctorFee = dialogView.findViewById(R.id.etDocFee);
+        EditText etDoctorBio = dialogView.findViewById(R.id.etDocBio);
+
+        etDoctorName.setText(currentDoctor.getFullName());
+        etDoctorDegree.setText(currentDoctor.getDegree());
+        etDoctorExp.setText(String.valueOf(currentDoctor.getExperienceYears()));
+        etDoctorFee.setText(String.valueOf((long) currentDoctor.getConsultationFee()));
+        etDoctorBio.setText(currentDoctor.getBio());
+
+        builder.setView(dialogView);
+        builder.setPositiveButton("Lưu cập nhật", (dialog, which) -> {
+            currentDoctor.setFullName(etDoctorName.getText().toString().trim());
+            currentDoctor.setDegree(etDoctorDegree.getText().toString().trim());
+            try {
+                currentDoctor.setExperienceYears(Integer.parseInt(etDoctorExp.getText().toString().trim()));
+            } catch (Exception ignored) {}
+            try {
+                currentDoctor.setConsultationFee(Double.parseDouble(etDoctorFee.getText().toString().trim()));
+            } catch (Exception ignored) {}
+            currentDoctor.setBio(etDoctorBio.getText().toString().trim());
+
+            doctorDao.updateDoctor(currentDoctor);
+            auditLogDao.log(sessionManager.getUserId(), sessionManager.getFullName(), User.ROLE_DOCTOR,
+                    "CẬP NHẬT HỒ SƠ", "Bác sĩ đã cập nhật hồ sơ chuyên môn");
+            Toast.makeText(this, "Đã cập nhật hồ sơ bác sĩ thành công!", Toast.LENGTH_SHORT).show();
+            loadDoctorProfile();
+        });
+        builder.setNegativeButton("Hủy", null);
+        builder.show();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        loadAppointments();
+        loadDoctorProfile();
     }
 }

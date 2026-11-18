@@ -43,6 +43,7 @@ import java.util.Locale;
 public class BookAppointmentActivity extends AppCompatActivity {
     private DoctorDao doctorDao;
     private AppointmentDao appointmentDao;
+    private com.phongkham.app.database.MedicalRecordDao medicalRecordDao;
     private AuditLogDao auditLogDao;
     private BusinessRulesValidator rulesValidator;
     private SessionManager sessionManager;
@@ -53,6 +54,14 @@ public class BookAppointmentActivity extends AppCompatActivity {
     private EditText etSelectDate, etSymptoms;
     private RecyclerView rvTimeSlots;
     private Button btnConfirmBooking;
+
+    private android.widget.RadioGroup rgAppointmentType;
+    private android.widget.RadioButton rbFirstVisit, rbFollowUp;
+    private android.widget.LinearLayout layoutFollowUpDetails;
+    private Spinner spinnerOldRecords;
+    private TextView tvOldRecordSummary;
+    private List<com.phongkham.app.models.MedicalRecord> oldRecordsList = new ArrayList<>();
+    private com.phongkham.app.models.MedicalRecord selectedOldRecord = null;
 
     private List<Specialty> specialtyList = new ArrayList<>();
     private List<Doctor> doctorList = new ArrayList<>();
@@ -70,6 +79,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
         doctorDao = new DoctorDao(this);
         appointmentDao = new AppointmentDao(this);
+        medicalRecordDao = new com.phongkham.app.database.MedicalRecordDao(this);
         auditLogDao = new AuditLogDao(this);
         rulesValidator = new BusinessRulesValidator(this);
         sessionManager = new SessionManager(this);
@@ -79,6 +89,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
         initViews();
         setupSpecialties();
         setupDatePicker();
+        setupFollowUpModule();
         setupListeners();
     }
 
@@ -92,6 +103,13 @@ public class BookAppointmentActivity extends AppCompatActivity {
         etSymptoms = findViewById(R.id.etSymptoms);
         rvTimeSlots = findViewById(R.id.rvTimeSlots);
         btnConfirmBooking = findViewById(R.id.btnConfirmBooking);
+
+        rgAppointmentType = findViewById(R.id.rgAppointmentType);
+        rbFirstVisit = findViewById(R.id.rbFirstVisit);
+        rbFollowUp = findViewById(R.id.rbFollowUp);
+        layoutFollowUpDetails = findViewById(R.id.layoutFollowUpDetails);
+        spinnerOldRecords = findViewById(R.id.spinnerOldRecords);
+        tvOldRecordSummary = findViewById(R.id.tvOldRecordSummary);
 
         selectedDate = DateTimeUtils.getToday();
         etSelectDate.setText(selectedDate);
@@ -171,6 +189,64 @@ public class BookAppointmentActivity extends AppCompatActivity {
         }
     }
 
+    private void setupFollowUpModule() {
+        rgAppointmentType.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rbFollowUp) {
+                layoutFollowUpDetails.setVisibility(View.VISIBLE);
+                loadPatientOldRecords();
+            } else {
+                layoutFollowUpDetails.setVisibility(View.GONE);
+                selectedOldRecord = null;
+                tvOldRecordSummary.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void loadPatientOldRecords() {
+        int patientId = sessionManager.getUserId();
+        oldRecordsList = medicalRecordDao.getRecordsByPatientId(patientId);
+
+        List<String> recordLabels = new ArrayList<>();
+        if (oldRecordsList.isEmpty()) {
+            recordLabels.add("--- Không tìm thấy hồ sơ cũ (Nhập mới bên dưới) ---");
+            tvOldRecordSummary.setVisibility(View.VISIBLE);
+            tvOldRecordSummary.setText("ℹ️ Chưa có lịch sử hồ sơ bệnh án cũ trong hệ thống. Bạn vẫn có thể điền triệu chứng và ghi chú tái khám ở mục bên dưới.");
+        } else {
+            recordLabels.add("--- Chọn bệnh án cũ để đối chiếu & cập nhật ---");
+            for (com.phongkham.app.models.MedicalRecord mr : oldRecordsList) {
+                recordLabels.add("Hồ sơ #" + mr.getId() + " - Chẩn đoán: " + mr.getDiagnosis() + " (" + mr.getCreatedAt() + ")");
+            }
+        }
+
+        ArrayAdapter<String> recordAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, recordLabels);
+        spinnerOldRecords.setAdapter(recordAdapter);
+
+        spinnerOldRecords.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0 && position - 1 < oldRecordsList.size()) {
+                    selectedOldRecord = oldRecordsList.get(position - 1);
+                    tvOldRecordSummary.setVisibility(View.VISIBLE);
+                    tvOldRecordSummary.setText("📌 Bệnh án cũ #" + selectedOldRecord.getId() + "\n" +
+                            "• Chẩn đoán: " + selectedOldRecord.getDiagnosis() + "\n" +
+                            "• Triệu chứng trước: " + selectedOldRecord.getSymptoms() + "\n" +
+                            "• Lời dặn/Ghi chú: " + (selectedOldRecord.getNotes() != null ? selectedOldRecord.getNotes() : "Đúng hẹn tái khám"));
+
+                    String currentSymptoms = etSymptoms.getText().toString().trim();
+                    if (currentSymptoms.isEmpty()) {
+                        etSymptoms.setText("[Tái khám theo hồ sơ #" + selectedOldRecord.getId() + " - " + selectedOldRecord.getDiagnosis() + "]: Tình trạng hiện tại: ");
+                        etSymptoms.setSelection(etSymptoms.getText().length());
+                    }
+                } else {
+                    selectedOldRecord = null;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
     private void setupDatePicker() {
         etSelectDate.setOnClickListener(v -> {
             Calendar c = Calendar.getInstance();
@@ -194,6 +270,17 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
     private void loadTimeSlots() {
         if (currentSelectedDoctor == null) return;
+
+        slotList.clear();
+
+        // 1. Kiểm tra bác sĩ có đăng ký nghỉ phép ngày này không
+        if (doctorDao.isDoctorOnLeave(currentSelectedDoctor.getId(), selectedDate)) {
+            Toast.makeText(this, "⚠️ Bác sĩ " + currentSelectedDoctor.getFullName() + " đã đăng ký nghỉ phép ngày " + selectedDate + "!\nVui lòng chọn ngày khám khác.", Toast.LENGTH_LONG).show();
+            slotAdapter = new TimeSlotAdapter(this, slotList, slot -> {});
+            rvTimeSlots.setAdapter(slotAdapter);
+            return;
+        }
+
         slotList = doctorDao.getTimeSlots(currentSelectedDoctor.getId(), selectedDate);
         if (slotList.isEmpty()) {
             String[] standardSlots = {
@@ -207,6 +294,16 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 slotList.add(new TimeSlot(0, currentSelectedDoctor.getId(), selectedDate, slotStr, 3, 0));
             }
         }
+
+        // Lọc các ca khám khả dụng
+        List<TimeSlot> availableSlots = new ArrayList<>();
+        for (TimeSlot s : slotList) {
+            if (s.isAvailable()) {
+                availableSlots.add(s);
+            }
+        }
+        slotList = availableSlots;
+
         slotAdapter = new TimeSlotAdapter(this, slotList, slot -> {});
         rvTimeSlots.setAdapter(slotAdapter);
     }
@@ -236,6 +333,11 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
         int patientId = sessionManager.getUserId();
 
+        if (doctorDao.isDoctorOnLeave(currentSelectedDoctor.getId(), selectedDate)) {
+            Toast.makeText(this, "⚠️ Bác sĩ đã đăng ký nghỉ phép ngày " + selectedDate + ". Không thể đặt lịch!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (rulesValidator.isPastDateTime(selectedDate, selectedSlot.getSlotTime())) {
             Toast.makeText(this, "Không thể đặt lịch cho khung giờ đã trôi qua trong quá khứ!", Toast.LENGTH_LONG).show();
             return;
@@ -252,6 +354,9 @@ public class BookAppointmentActivity extends AppCompatActivity {
             return;
         }
 
+        boolean isFollowUp = rbFollowUp != null && rbFollowUp.isChecked();
+        String apptType = isFollowUp ? "Tái khám" : "Khám lần đầu";
+
         JSONObject bookData = new JSONObject();
         try {
             bookData.put("patientId", patientId);
@@ -262,6 +367,10 @@ public class BookAppointmentActivity extends AppCompatActivity {
             bookData.put("appointmentDate", selectedDate);
             bookData.put("timeSlot", selectedSlot.getSlotTime());
             bookData.put("symptoms", symptoms);
+            bookData.put("appointmentType", apptType);
+            if (selectedOldRecord != null) {
+                bookData.put("previousRecordId", selectedOldRecord.getId());
+            }
             bookData.put("fee", currentSelectedDoctor.getConsultationFee());
         } catch (Exception ignored) {}
 
@@ -285,6 +394,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 appt.setAppointmentDate(selectedDate);
                 appt.setTimeSlot(selectedSlot.getSlotTime());
                 appt.setSymptoms(symptoms);
+                appt.setAppointmentType(apptType);
                 appt.setStatus(Appointment.STATUS_PENDING);
                 appt.setFee(currentSelectedDoctor.getConsultationFee());
                 appt.setPaid(false);

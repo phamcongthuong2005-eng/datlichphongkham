@@ -109,9 +109,11 @@ public class DoctorScheduleActivity extends AppCompatActivity {
                     .setTitle("Xác nhận đăng ký nghỉ")
                     .setMessage("Đăng ký nghỉ trực ngày " + selectedLeaveDate + " với lý do: " + (reason.isEmpty() ? "Việc cá nhân" : reason) + "?\n(Hệ thống sẽ vô hiệu hóa khung giờ đặt khám của ngày này)")
                     .setPositiveButton("Xác nhận", (dialog, which) -> {
+                        int docId = doctor != null ? doctor.getId() : 1;
+                        doctorDao.registerDoctorLeave(docId, selectedLeaveDate, reason.isEmpty() ? "Việc cá nhân" : reason);
                         auditLogDao.log(sessionManager.getUserId(), sessionManager.getFullName(), User.ROLE_DOCTOR,
                                 "ĐĂNG KÝ NGHỈ PHÉP", "Bác sĩ đăng ký nghỉ ngày " + selectedLeaveDate + " - Lý do: " + reason);
-                        Toast.makeText(this, "Đã gửi đăng ký nghỉ phép thành công!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Đã gửi đăng ký nghỉ phép thành công! Khung giờ ngày " + selectedLeaveDate + " đã được đóng.", Toast.LENGTH_LONG).show();
                         etLeaveDate.setText("");
                         etLeaveReason.setText("");
                     })

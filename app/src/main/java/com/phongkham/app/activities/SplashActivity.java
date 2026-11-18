@@ -51,6 +51,9 @@ public class SplashActivity extends AppCompatActivity {
             case User.ROLE_ADMIN:
                 intent = new Intent(this, AdminMainActivity.class);
                 break;
+            case User.ROLE_OWNER:
+                intent = new Intent(this, com.phongkham.app.activities.owner.OwnerMainActivity.class);
+                break;
             default:
                 intent = new Intent(this, PatientMainActivity.class);
                 break;

@@ -169,6 +169,72 @@ public class DoctorDao {
         return true;
     }
 
+    public boolean isDoctorOnLeave(int doctorId, String date) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id FROM " + DatabaseHelper.TABLE_DOCTOR_LEAVES +
+                " WHERE doctor_id = ? AND leave_date = ?", new String[]{String.valueOf(doctorId), date});
+        boolean onLeave = cursor.getCount() > 0;
+        cursor.close();
+        return onLeave;
+    }
+
+    public boolean registerDoctorLeave(int doctorId, String date, String reason) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("doctor_id", doctorId);
+        values.put("leave_date", date);
+        values.put("reason", reason);
+        values.put("created_at", new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(new java.util.Date()));
+        long id = db.insert(DatabaseHelper.TABLE_DOCTOR_LEAVES, null, values);
+
+        db.execSQL("UPDATE " + DatabaseHelper.TABLE_TIME_SLOTS + " SET is_available = 0 WHERE doctor_id = ? AND slot_date = ?",
+                new Object[]{doctorId, date});
+        return id != -1;
+    }
+
+    public boolean toggleSlotAvailability(int doctorId, String date, String timeSlot, boolean isAvailable) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("is_available", isAvailable ? 1 : 0);
+        int rows = db.update(DatabaseHelper.TABLE_TIME_SLOTS, values,
+                "doctor_id = ? AND slot_date = ? AND slot_time = ?",
+                new String[]{String.valueOf(doctorId), date, timeSlot});
+        if (rows == 0) {
+            values.put("doctor_id", doctorId);
+            values.put("slot_date", date);
+            values.put("slot_time", timeSlot);
+            values.put("max_patients", 3);
+            values.put("booked_patients", 0);
+            db.insert(DatabaseHelper.TABLE_TIME_SLOTS, null, values);
+        }
+        return true;
+    }
+
+    public boolean setDayAvailability(int doctorId, String date, boolean isAvailable) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if (!isAvailable) {
+            registerDoctorLeave(doctorId, date, "Tạm đóng nhận bệnh trong ngày");
+        } else {
+            db.delete(DatabaseHelper.TABLE_DOCTOR_LEAVES, "doctor_id = ? AND leave_date = ?", new String[]{String.valueOf(doctorId), date});
+            db.execSQL("UPDATE " + DatabaseHelper.TABLE_TIME_SLOTS + " SET is_available = 1 WHERE doctor_id = ? AND slot_date = ?",
+                    new Object[]{doctorId, date});
+        }
+        return true;
+    }
+
+    public boolean addCustomSlot(int doctorId, String date, String timeSlot) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("doctor_id", doctorId);
+        values.put("slot_date", date);
+        values.put("slot_time", timeSlot);
+        values.put("max_patients", 3);
+        values.put("booked_patients", 0);
+        values.put("is_available", 1);
+        long id = db.insert(DatabaseHelper.TABLE_TIME_SLOTS, null, values);
+        return id != -1;
+    }
+
     private Doctor cursorToDoctor(Cursor cursor) {
         Doctor d = new Doctor();
         d.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id")));

@@ -16,7 +16,7 @@ import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "phongkham_leloi.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     // Table names
     public static final String TABLE_USERS = "users";
@@ -33,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NOTIFICATIONS = "notifications";
     public static final String TABLE_AUDIT_LOGS = "audit_logs";
     public static final String TABLE_CONFIGS = "system_configs";
+    public static final String TABLE_DOCTOR_LEAVES = "doctor_leaves";
 
     private static DatabaseHelper instance;
 
@@ -49,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // 1. Users table (Hỗ trợ 5 vai trò: PATIENT, DOCTOR, STAFF, NURSE, ADMIN)
+        // 1. Users table (Hỗ trợ các vai trò: PATIENT, DOCTOR, STAFF, NURSE, ADMIN, OWNER)
         db.execSQL("CREATE TABLE " + TABLE_USERS + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "user_code TEXT, " +
@@ -61,6 +62,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "birth_date TEXT, " +
                 "gender TEXT, " +
                 "address TEXT, " +
+                "emergency_contact_name TEXT, " +
+                "emergency_contact_phone TEXT, " +
                 "insurance_number TEXT, " +
                 "medical_history TEXT, " +
                 "allergies TEXT, " +
@@ -235,6 +238,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "key TEXT PRIMARY KEY, " +
                 "value TEXT)");
 
+        // 15. Doctor leaves table (Đăng ký nghỉ phép của Bác sĩ)
+        db.execSQL("CREATE TABLE " + TABLE_DOCTOR_LEAVES + " (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "doctor_id INTEGER NOT NULL, " +
+                "leave_date TEXT NOT NULL, " +
+                "reason TEXT, " +
+                "created_at TEXT)");
+
         // Seed initial data for Phòng Khám Lê Lợi
         seedInitialData(db);
     }
@@ -255,7 +266,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTIFICATIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_AUDIT_LOGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONFIGS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOCTOR_LEAVES);
         onCreate(db);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        try {
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DOCTOR_LEAVES + " (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "doctor_id INTEGER NOT NULL, " +
+                    "leave_date TEXT NOT NULL, " +
+                    "reason TEXT, " +
+                    "created_at TEXT)");
+        } catch (Exception ignored) {}
+
+        try {
+            db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN emergency_contact_name TEXT");
+        } catch (Exception ignored) {}
+        try {
+            db.execSQL("ALTER TABLE " + TABLE_USERS + " ADD COLUMN emergency_contact_phone TEXT");
+        } catch (Exception ignored) {}
+
+        try {
+            db.execSQL("UPDATE " + TABLE_USERS + " SET email = 'chuphongkham@gmail.com', role = 'OWNER', full_name = 'Chủ Phòng Khám Lê Lợi' WHERE id = 1");
+            db.execSQL("INSERT OR REPLACE INTO " + TABLE_USERS + " (id, user_code, full_name, email, phone, password, role) VALUES " +
+                    "(10, 'ND010', 'Quản Trị Viên (Admin)', 'admin@gmail.com', '0900000010', '123456', 'ADMIN')");
+        } catch (Exception ignored) {}
     }
 
     private void seedInitialData(SQLiteDatabase db) {
@@ -269,9 +307,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_CONFIGS + " VALUES ('CLINIC_PHONE', '028.3822.8888 - 0900.000.001')");
         db.execSQL("INSERT INTO " + TABLE_CONFIGS + " VALUES ('CLINIC_ADDRESS', 'Số 12 Lê Lợi, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh')");
 
-        // 2. Demo Users (4 vai trò chuẩn phòng khám tư nhân: ADMIN, DOCTOR, STAFF, PATIENT)
+        // 2. Demo Users (Chuẩn phòng khám tư nhân: OWNER, ADMIN, DOCTOR, STAFF, PATIENT)
         db.execSQL("INSERT INTO " + TABLE_USERS + " (id, user_code, full_name, email, phone, password, role) VALUES " +
-                "(1, 'ND001', 'Chủ Phòng Khám Lê Lợi', 'admin@gmail.com', '0900000001', '123456', 'ADMIN')");
+                "(1, 'ND001', 'Chủ Phòng Khám Lê Lợi', 'chuphongkham@gmail.com', '0900000001', '123456', 'OWNER')");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (id, user_code, full_name, email, phone, password, role) VALUES " +
+                "(10, 'ND010', 'Quản Trị Viên (Admin)', 'admin@gmail.com', '0900000010', '123456', 'ADMIN')");
 
         db.execSQL("INSERT INTO " + TABLE_USERS + " (id, user_code, full_name, email, phone, password, role) VALUES " +
                 "(2, 'ND002', 'BS. CKI Phan Ba Hai Bình', 'bacsi@gmail.com', '0900000002', '123456', 'DOCTOR')");

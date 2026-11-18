@@ -35,8 +35,9 @@ public class AuthActivity extends AppCompatActivity {
     private TextView tvAuthTitle, tvAuthSubtitle, tvForgotPassword, tvSwitchAuthMode;
     private LinearLayout layoutFullName;
     private EditText etFullName, etAccount, etPassword;
+    private EditText etRegisterPhone, etAddress, etEmergencyContact;
     private Button btnSubmitAuth;
-    private Button btnQuickPatient, btnQuickDoctor, btnQuickStaff, btnQuickNurse, btnQuickAdmin;
+    private Button btnQuickPatient, btnQuickDoctor, btnQuickStaff, btnQuickNurse, btnQuickAdmin, btnQuickOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,9 @@ public class AuthActivity extends AppCompatActivity {
         tvSwitchAuthMode = findViewById(R.id.tvSwitchAuthMode);
         layoutFullName = findViewById(R.id.layoutFullName);
         etFullName = findViewById(R.id.etFullName);
+        etRegisterPhone = findViewById(R.id.etRegisterPhone);
+        etAddress = findViewById(R.id.etAddress);
+        etEmergencyContact = findViewById(R.id.etEmergencyContact);
         etAccount = findViewById(R.id.etAccount);
         etPassword = findViewById(R.id.etPassword);
         btnSubmitAuth = findViewById(R.id.btnSubmitAuth);
@@ -67,6 +71,7 @@ public class AuthActivity extends AppCompatActivity {
         btnQuickStaff = findViewById(R.id.btnQuickStaff);
         btnQuickNurse = findViewById(R.id.btnQuickNurse);
         btnQuickAdmin = findViewById(R.id.btnQuickAdmin);
+        btnQuickOwner = findViewById(R.id.btnQuickOwner);
     }
 
     private void setupListeners() {
@@ -77,6 +82,9 @@ public class AuthActivity extends AppCompatActivity {
             btnQuickNurse.setOnClickListener(v -> fillDemoAccount("letan2@gmail.com", "123456"));
         }
         btnQuickAdmin.setOnClickListener(v -> fillDemoAccount("admin@gmail.com", "123456"));
+        if (btnQuickOwner != null) {
+            btnQuickOwner.setOnClickListener(v -> fillDemoAccount("chuphongkham@gmail.com", "123456"));
+        }
 
         tvSwitchAuthMode.setOnClickListener(v -> toggleAuthMode());
         btnSubmitAuth.setOnClickListener(v -> handleAuthSubmit());
@@ -152,44 +160,36 @@ public class AuthActivity extends AppCompatActivity {
             });
         } else {
             String fullName = etFullName.getText().toString().trim();
+            String phone = etRegisterPhone != null ? etRegisterPhone.getText().toString().trim() : "";
+            String address = etAddress != null ? etAddress.getText().toString().trim() : "";
+            String emergencyContact = etEmergencyContact != null ? etEmergencyContact.getText().toString().trim() : "";
+
             if (fullName.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập họ và tên của bạn!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            JSONObject regData = new JSONObject();
-            try {
-                regData.put("fullName", fullName);
-                regData.put("phone", account);
-                regData.put("email", account.contains("@") ? account : account + "@gmail.com");
-                regData.put("password", password);
-            } catch (Exception ignored) {}
+            if (phone.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập số điện thoại của bạn!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            TcpClient.sendRequest("REGISTER", regData, new TcpClient.ResponseCallback() {
-                @Override
-                public void onSuccess(JSONObject response) {
-                    JSONObject userObj = response.optJSONObject("user");
-                    if (userObj != null) {
-                        User newUser = new User();
-                        newUser.setId(userObj.optInt("id"));
-                        newUser.setFullName(userObj.optString("fullName"));
-                        newUser.setEmail(userObj.optString("email"));
-                        newUser.setPhone(userObj.optString("phone"));
-                        newUser.setRole(userObj.optString("role"));
+            if (!phone.matches("^(0|\\+84)[35789][0-9]{8}$")) {
+                Toast.makeText(this, "Số điện thoại không hợp lệ! Vui lòng nhập đúng 10 số (bắt đầu bằng 03, 05, 07, 08, 09)", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-                        sessionManager.createLoginSession(newUser);
-                        Toast.makeText(AuthActivity.this, "Đăng ký thành công! Chào mừng " + newUser.getFullName(), Toast.LENGTH_SHORT).show();
-                        navigateToRoleHome(User.ROLE_PATIENT);
-                        return;
-                    }
-                    fallbackLocalRegister(fullName, account, password);
-                }
+            if (address.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập địa chỉ nơi ở của bạn!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                @Override
-                public void onError(String errorMessage) {
-                    fallbackLocalRegister(fullName, account, password);
-                }
-            });
+            if (emergencyContact.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập thông tin người thân liên hệ khi khẩn cấp!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            fallbackLocalRegister(fullName, phone, address, emergencyContact, account, password);
         }
     }
 
@@ -210,24 +210,25 @@ public class AuthActivity extends AppCompatActivity {
         navigateToRoleHome(user.getRole());
     }
 
-    private void fallbackLocalRegister(String fullName, String account, String password) {
+    private void fallbackLocalRegister(String fullName, String phone, String address, String emergencyContact, String account, String password) {
         User newUser = new User();
         newUser.setFullName(fullName);
+        newUser.setPhone(phone);
         if (account.contains("@")) {
             newUser.setEmail(account);
-            newUser.setPhone("09" + ((int)(Math.random() * 89999999) + 10000000));
         } else {
-            newUser.setPhone(account);
-            newUser.setEmail(account + "@gmail.com");
+            newUser.setEmail(phone + "@gmail.com");
         }
+        newUser.setAddress(address);
+        newUser.setEmergencyContactPhone(emergencyContact);
         newUser.setPassword(password);
         newUser.setRole(User.ROLE_PATIENT);
 
         boolean success = userDao.register(newUser);
         if (success) {
             sessionManager.createLoginSession(newUser);
-            auditLogDao.log(newUser.getId(), newUser.getFullName(), newUser.getRole(), "ĐĂNG KÝ", "Đăng ký tài khoản bệnh nhân mới");
-            Toast.makeText(this, "Đăng ký thành công! Đang chuyển đến màn hình chính...", Toast.LENGTH_SHORT).show();
+            auditLogDao.log(newUser.getId(), newUser.getFullName(), newUser.getRole(), "ĐĂNG KÝ", "Đăng ký tài khoản bệnh nhân mới thành công");
+            Toast.makeText(this, "Đăng ký tài khoản thành công! Chào mừng " + newUser.getFullName(), Toast.LENGTH_SHORT).show();
             navigateToRoleHome(User.ROLE_PATIENT);
         } else {
             Toast.makeText(this, "Số điện thoại hoặc Email đã tồn tại trong hệ thống!", Toast.LENGTH_SHORT).show();
@@ -276,6 +277,9 @@ public class AuthActivity extends AppCompatActivity {
                 break;
             case User.ROLE_ADMIN:
                 intent = new Intent(this, AdminMainActivity.class);
+                break;
+            case User.ROLE_OWNER:
+                intent = new Intent(this, com.phongkham.app.activities.owner.OwnerMainActivity.class);
                 break;
             default:
                 intent = new Intent(this, PatientMainActivity.class);

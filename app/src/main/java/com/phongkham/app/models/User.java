@@ -7,10 +7,11 @@ public class User implements Serializable {
     public static final String ROLE_DOCTOR = "DOCTOR";
     public static final String ROLE_STAFF = "STAFF";   // Lễ tân
     public static final String ROLE_NURSE = "NURSE";   // Y tá
-    public static final String ROLE_ADMIN = "ADMIN";   // Quản lý / Chủ phòng khám
+    public static final String ROLE_ADMIN = "ADMIN";   // Quản lý
+    public static final String ROLE_OWNER = "OWNER";   // Chủ phòng khám
 
     private int id;
-    private String userCode; // e.g. US001
+    private String userCode; // e.g. ND001
     private String fullName;
     private String email;
     private String phone;
@@ -19,6 +20,8 @@ public class User implements Serializable {
     private String birthDate;
     private String gender;
     private String address;
+    private String emergencyContactName;
+    private String emergencyContactPhone;
     private String insuranceNumber;
     private String medicalHistory;
     private String allergies;
@@ -70,6 +73,12 @@ public class User implements Serializable {
 
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
+
+    public String getEmergencyContactName() { return emergencyContactName; }
+    public void setEmergencyContactName(String emergencyContactName) { this.emergencyContactName = emergencyContactName; }
+
+    public String getEmergencyContactPhone() { return emergencyContactPhone; }
+    public void setEmergencyContactPhone(String emergencyContactPhone) { this.emergencyContactPhone = emergencyContactPhone; }
 
     public String getInsuranceNumber() { return insuranceNumber; }
     public void setInsuranceNumber(String insuranceNumber) { this.insuranceNumber = insuranceNumber; }

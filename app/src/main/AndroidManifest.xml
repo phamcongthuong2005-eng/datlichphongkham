@@ -39,17 +39,28 @@
 
         <!-- 4. Doctor Module (Menu 4) -->
         <activity android:name=".activities.doctor.DoctorMainActivity" android:exported="false" />
+        <activity android:name=".activities.doctor.DoctorAppointmentsActivity" android:exported="false" />
+        <activity android:name=".activities.doctor.DoctorSlotToggleActivity" android:exported="false" />
         <activity android:name=".activities.doctor.DoctorExamineActivity" android:exported="false" />
         <activity android:name=".activities.doctor.DoctorScheduleActivity" android:exported="false" />
 
         <!-- 5. Staff & Nurse Module (Menu 3) -->
         <activity android:name=".activities.staff.StaffMainActivity" android:exported="false" />
+        <activity android:name=".activities.staff.StaffAppointmentsActivity" android:exported="false" />
+        <activity android:name=".activities.staff.StaffQueueTodayActivity" android:exported="false" />
         <activity android:name=".activities.staff.StaffCreateBookingActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activities.staff.StaffInvoiceActivity" android:exported="false" />
         <activity android:name=".activities.staff.NurseMainActivity" android:exported="false" />
         <activity android:name=".activities.staff.NurseMeasureVitalsActivity" android:exported="false" />
 
-        <!-- 6. Admin Module (Menu 5) -->
+        <!-- 6. Owner Module (Ứng Dụng Quản Lý Chủ Phòng Khám) -->
+        <activity android:name=".activities.owner.OwnerMainActivity" android:exported="false" />
+        <activity android:name=".activities.owner.OwnerDoctorIncomeActivity" android:exported="false" />
+        <activity android:name=".activities.owner.OwnerPatientFinanceActivity" android:exported="false" />
+        <activity android:name=".activities.owner.OwnerFinancialReportActivity" android:exported="false" />
+        <activity android:name=".activities.owner.OwnerStaffScheduleActivity" android:exported="false" />
+
+        <!-- 7. Admin Module (Menu 5) -->
         <activity android:name=".activities.admin.AdminMainActivity" android:exported="false" />
         <activity android:name=".activities.admin.AdminManageUsersActivity" android:exported="false" />
         <activity android:name=".activities.admin.AdminManageDoctorsActivity" android:exported="false" />

@@ -41,6 +41,8 @@ public class UserDao {
         values.put("birth_date", user.getBirthDate());
         values.put("gender", user.getGender());
         values.put("address", user.getAddress());
+        values.put("emergency_contact_name", user.getEmergencyContactName());
+        values.put("emergency_contact_phone", user.getEmergencyContactPhone());
         values.put("insurance_number", user.getInsuranceNumber());
         values.put("medical_history", user.getMedicalHistory());
         values.put("allergies", user.getAllergies());
@@ -63,6 +65,8 @@ public class UserDao {
         values.put("birth_date", user.getBirthDate());
         values.put("gender", user.getGender());
         values.put("address", user.getAddress());
+        values.put("emergency_contact_name", user.getEmergencyContactName());
+        values.put("emergency_contact_phone", user.getEmergencyContactPhone());
         values.put("insurance_number", user.getInsuranceNumber());
         values.put("medical_history", user.getMedicalHistory());
         values.put("allergies", user.getAllergies());
@@ -81,6 +85,8 @@ public class UserDao {
         values.put("birth_date", user.getBirthDate());
         values.put("gender", user.getGender());
         values.put("address", user.getAddress());
+        values.put("emergency_contact_name", user.getEmergencyContactName());
+        values.put("emergency_contact_phone", user.getEmergencyContactPhone());
         values.put("insurance_number", user.getInsuranceNumber());
         values.put("medical_history", user.getMedicalHistory());
         values.put("allergies", user.getAllergies());
@@ -160,6 +166,10 @@ public class UserDao {
         u.setBirthDate(cursor.getString(cursor.getColumnIndexOrThrow("birth_date")));
         u.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
         u.setAddress(cursor.getString(cursor.getColumnIndexOrThrow("address")));
+        int emNameIdx = cursor.getColumnIndex("emergency_contact_name");
+        if (emNameIdx != -1) u.setEmergencyContactName(cursor.getString(emNameIdx));
+        int emPhoneIdx = cursor.getColumnIndex("emergency_contact_phone");
+        if (emPhoneIdx != -1) u.setEmergencyContactPhone(cursor.getString(emPhoneIdx));
         u.setInsuranceNumber(cursor.getString(cursor.getColumnIndexOrThrow("insurance_number")));
         u.setMedicalHistory(cursor.getString(cursor.getColumnIndexOrThrow("medical_history")));
         u.setAllergies(cursor.getString(cursor.getColumnIndexOrThrow("allergies")));

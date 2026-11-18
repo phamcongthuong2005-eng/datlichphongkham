@@ -49,12 +49,12 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Quick Demo Switcher Buttons (4 vai trò phòng khám tư nhân) -->
+        <!-- Quick Demo Switcher Buttons (5 vai trò: Bệnh nhân, Bác sĩ, Lễ tân, Admin, Chủ PK) -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Chọn nhanh tài khoản Demo (4 vai trò):"
+            android:layout_marginTop="18dp"
+            android:text="Chọn nhanh tài khoản Demo (5 vai trò):"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -69,13 +69,14 @@
                 android:id="@+id/btnQuickPatient"
                 android:layout_width="0dp"
                 android:layout_height="38dp"
-                android:layout_marginEnd="3dp"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/primary_light"
+                android:paddingHorizontal="2dp"
                 android:text="Bệnh nhân"
                 android:textAllCaps="false"
                 android:textColor="@color/primary"
-                android:textSize="11sp"
+                android:textSize="10.5sp"
                 app:cornerRadius="6dp" />
 
             <Button
@@ -85,10 +86,11 @@
                 android:layout_marginHorizontal="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/primary_light"
+                android:paddingHorizontal="2dp"
                 android:text="Bác sĩ"
                 android:textAllCaps="false"
                 android:textColor="@color/primary"
-                android:textSize="11sp"
+                android:textSize="10.5sp"
                 app:cornerRadius="6dp" />
 
             <Button
@@ -98,23 +100,39 @@
                 android:layout_marginHorizontal="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/primary_light"
+                android:paddingHorizontal="2dp"
                 android:text="Lễ tân"
                 android:textAllCaps="false"
                 android:textColor="@color/primary"
-                android:textSize="11sp"
+                android:textSize="10.5sp"
                 app:cornerRadius="6dp" />
 
             <Button
                 android:id="@+id/btnQuickAdmin"
                 android:layout_width="0dp"
                 android:layout_height="38dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginHorizontal="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/primary_light"
-                android:text="Quản trị"
+                android:paddingHorizontal="2dp"
+                android:text="Admin"
                 android:textAllCaps="false"
                 android:textColor="@color/primary"
-                android:textSize="11sp"
+                android:textSize="10.5sp"
+                app:cornerRadius="6dp" />
+
+            <Button
+                android:id="@+id/btnQuickOwner"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/primary_light"
+                android:paddingHorizontal="2dp"
+                android:text="Chủ PK"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="10.5sp"
                 app:cornerRadius="6dp" />
 
             <Button
@@ -139,7 +157,7 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <!-- Full Name (Only for Register) -->
+                <!-- Full Name & Extra Info (Only for Register) -->
                 <LinearLayout
                     android:id="@+id/layoutFullName"
                     android:layout_width="match_parent"
@@ -163,6 +181,63 @@
                         android:background="@drawable/bg_edit_text"
                         android:hint="Nhập họ và tên đầy đủ"
                         android:inputType="textPersonName"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Số điện thoại cá nhân (10 số) *"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etRegisterPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="Ví dụ: 0912345678"
+                        android:inputType="phone"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Địa chỉ nơi ở *"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="Số nhà, đường, phường/xã, quận/huyện..."
+                        android:inputType="textPostalAddress"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Số điện thoại / Họ tên người thân liên hệ *"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etEmergencyContact"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="Ví dụ: Anh trai - 0987654321"
+                        android:inputType="text"
                         android:textSize="14sp" />
                 </LinearLayout>
 

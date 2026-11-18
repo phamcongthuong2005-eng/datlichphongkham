@@ -54,11 +54,18 @@ public class AppointmentDao {
     }
 
     public boolean updateStatus(int appointmentId, String newStatus) {
+        return updateStatus(appointmentId, newStatus, null);
+    }
+
+    public boolean updateStatus(int appointmentId, String newStatus, String cancelReason) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Appointment appt = getAppointmentById(appointmentId);
 
         ContentValues values = new ContentValues();
         values.put("status", newStatus);
+        if (cancelReason != null) {
+            values.put("cancel_reason", cancelReason);
+        }
         int rows = db.update(DatabaseHelper.TABLE_APPOINTMENTS, values, "id = ?", new String[]{String.valueOf(appointmentId)});
 
         if (rows > 0 && appt != null) {
@@ -68,6 +75,14 @@ public class AppointmentDao {
             }
         }
         return rows > 0;
+    }
+
+    public int checkInAppointment(int appointmentId) {
+        Appointment appt = getAppointmentById(appointmentId);
+        if (appt == null) return 0;
+        int nextQueue = getNextQueueNumber(appt.getAppointmentDate());
+        assignQueueNumber(appointmentId, nextQueue);
+        return nextQueue;
     }
 
     public boolean assignQueueNumber(int appointmentId, int queueNumber) {

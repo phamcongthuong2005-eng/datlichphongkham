@@ -154,12 +154,85 @@
                 android:layout_marginTop="8dp"
                 android:nestedScrollingEnabled="false" />
 
-            <!-- Step 5: Triệu chứng / Lý do khám -->
+            <!-- Step 5: Loại khám (Khám lần đầu hay Tái khám) -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="5. Mô tả triệu chứng cơ xương khớp *"
+                android:text="5. Hình thức khám *"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rgAppointmentType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbFirstVisit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="Khám lần đầu"
+                    android:textSize="13sp" />
+
+                <RadioButton
+                    android:id="@+id/rbFollowUp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tái khám"
+                    android:textSize="13sp" />
+            </RadioGroup>
+
+            <!-- Layout khi chọn Tái khám: Cập nhật hồ sơ cũ -->
+            <LinearLayout
+                android:id="@+id/layoutFollowUpDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_rounded_card"
+                android:backgroundTint="#F0FDF4"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📋 Cập nhật hồ sơ bệnh án cũ:"
+                    android:textColor="#166534"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerOldRecords"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_edit_text" />
+
+                <TextView
+                    android:id="@+id/tvOldRecordSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textColor="#374151"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- Step 6: Triệu chứng / Lý do khám -->
+            <TextView
+                android:id="@+id/tvSymptomsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="6. Mô tả triệu chứng cơ xương khớp *"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
